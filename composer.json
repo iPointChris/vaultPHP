@@ -1,8 +1,8 @@
 {
-    "name": "mittwald/vault-php",
+    "name": "ipointchris/vault-php",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://www.mittwald.de/",
+    "homepage": "https://ipointsolutions.net",
     "description": "A PHP client library for 'Vault by HashiCorp'",
     "require": {
         "ext-json": "*",
@@ -18,8 +18,8 @@
     },
     "authors": [
         {
-            "name": "Marco Rieger",
-            "email": "m.rieger@mittwald.de"
+            "name": "Chris Kuhn",
+            "email": "Chris@ipointsolutions.net"
         }
     ],
     "autoload": {
