@@ -1,17 +1,53 @@
+#version: '3'
+#
+#services:
+#
+#  webserver:
+#    image: nginx:latest
+#    ports:
+#      - 8080:80
+#    volumes:
+#      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+#      - ./:/var/www/html
+#
+#  php:
+#    build: ./docker/php/
+#    expose:
+#      - 9000
+#    volumes:
+#      - .:/var/www/htm
+#      - ./docker/php/conf.d:/usr/local/etc/php/conf.d
+#      - ./docker/php/mods-available:/etc/php/7.4/mods-available
 version: "3"
 services:
-  vault:
-    image: vault:latest
-    container_name: vault
-    restart: unless-stopped
-    ports:
-      - "8200:8200"
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports: 
+      - "8080:80"
+    networks:
+      - internal
+    volumes:
+      - ./src/VaultPHP:/var/www/html/vendor/VaultPHP
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    expose : 
+      - 9000
+    networks:
+      - internal
     environment:
-      VAULT_ADDR: 'http://0.0.0.0:8200'
-      VAULT_DEV_ROOT_TOKEN_ID: 'test'
-      VAULT_TOKEN: 'test'
-    cap_add:
-      - IPC_LOCK
-    healthcheck:
-      retries: 5
-    command: server -dev
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+    volumes:
+      - ./src/VaultPHP:/var/www/html/vendor/VaultPHP
+      - ./examples:/var/www/html/examples
+      - ./logs/php.log:/var/log/fpm-php.www.log
+      - ./docker/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/php/mods-available:/etc/php/7.4/mods-available
+      
+networks:
+  internal:
+    driver: bridge

@@ -3,3 +3,11 @@
 /.phpunit.cache/
 .phpunit.result.cache
 composer.lock
+/.docker/
+/docker/
+KVTEST.php
+/logs/
+/nginx/
+/php/
+.vscode/
+.DS_Store
